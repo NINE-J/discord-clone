@@ -8,6 +8,8 @@ import {
   SignedOut,
   UserButton
 } from '@clerk/nextjs'
+import { ThemeProvider } from "@/components/providers/theme-provider";
+import { cn } from "@/lib/utils";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -23,8 +25,18 @@ export default function RootLayout({
 }>) {
   return (
     <ClerkProvider>
-      <html lang="en">
-        <body className={inter.className}>{children}</body>
+      <html lang="en" suppressHydrationWarning>
+        <body className={cn(
+          inter.className,
+          "bg-white dark:bg-[#313338]"
+        )}>
+          <ThemeProvider 
+          attribute="class"
+          defaultTheme="dark"
+          enableSystem={false}
+          storage-key="discord-theme"
+          >{children}</ThemeProvider>
+        </body>
       </html>
     </ClerkProvider>
   );
