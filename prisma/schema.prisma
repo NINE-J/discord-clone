@@ -29,7 +29,7 @@ model Profile {
 }
 
 model Server {
-  id String @id @default(uuid()) @map("_id") @db.ObjectId
+  id String @id @default(uuid()) @map("_id")
   name String
   imageUrl String
   inviteCode String
@@ -53,13 +53,13 @@ enum MemberRole {
 }
 
 model Member {
-  id String @id @default(uuid()) @map("_id") @db.ObjectId
+  id String @id @default(uuid()) @map("_id")
   role MemberRole @default(GUEST)
 
   profileId String @db.ObjectId
   profile Profile @relation(fields: [profileId], references: [id], onDelete: Cascade)
 
-  serverId String @db.ObjectId
+  serverId String
   server Server @relation(fields: [serverId], references: [id], onDelete: Cascade)
 
   createdAt DateTime @default(now())
@@ -76,14 +76,14 @@ enum ChannelType {
 }
 
 model Channel {
-  id String @id @default(uuid()) @map("_id") @db.ObjectId
+  id String @id @default(uuid()) @map("_id")
   name String
   type ChannelType @default(TEXT)
 
   profileId String @db.ObjectId
   profile Profile @relation(fields: [profileId], references: [id], onDelete: Cascade)
 
-  serverId String @db.ObjectId
+  serverId String
   server Server @relation(fields: [serverId], references: [id], onDelete: Cascade)
 
   createdAt DateTime @default(now())
