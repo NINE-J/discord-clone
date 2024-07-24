@@ -4,6 +4,7 @@ import axios from "axios";
 import * as z from "zod";
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form";
+import { useEffect } from "react";
 
 import {
   Dialog,
@@ -36,11 +37,12 @@ const formSchema = z.object({
   }),
 })
 
-export const CreateServerModal = () => {
-  const { isOpen, onClose, type } = useModal();
+export const EditServerModal = () => {
+  const { isOpen, onClose, type, data } = useModal();
   const router = useRouter();
 
-  const isModalOpen = isOpen && type === "createServer";
+  const isModalOpen = isOpen && type === "editServer";
+  const { server } = data;
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -50,11 +52,18 @@ export const CreateServerModal = () => {
     }
   });
 
+  useEffect(()=>{
+    if(server) {
+      form.setValue("name", server.name);
+      form.setValue("imageUrl", server.imageUrl);
+    }
+  },[server, form])
+
   const isLoading = form.formState.isSubmitting;
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
-      await axios.post("/api/servers",values);
+      await axios.patch(`/api/servers/${server?.id}`, values);
 
       form.reset();
       router.refresh();
@@ -74,7 +83,7 @@ export const CreateServerModal = () => {
       <DialogContent className="bg-white text-black p-0 overflow-hidden">
         <DialogHeader className="pt-8 px-6">
           <DialogTitle className="text-2xl text-center font-bold">
-            서버 생성
+            서버 사용자 정의
           </DialogTitle>
           <DialogDescription className="text-center text-zinc-500">
             서버의 이름과 이미지를 설정합니다. 나중에 언제든지 변경할 수 있습니다.
@@ -125,7 +134,7 @@ export const CreateServerModal = () => {
             </div>
             <DialogFooter className="bg-gray-100 px-6 py-4">
               <Button variant="primary" disabled={isLoading}>
-                생성
+                저장
               </Button>
             </DialogFooter>
           </form>
