@@ -93,6 +93,7 @@ export const ServerHeader = ({
           )}
           {isAdmin && (
             <DropdownMenuItem
+              onClick={()=>onOpen("deleteServer", { server })}
               className="text-rose-500 px-3 py-2 text-sm cursor-pointer"
             >
               서버 삭제
@@ -101,6 +102,7 @@ export const ServerHeader = ({
           )}
           {!isAdmin && (
             <DropdownMenuItem
+              onClick={()=>onOpen("leaveServer", { server })}
               className="text-rose-500 px-3 py-2 text-sm cursor-pointer"
             >
               서버 나가기
