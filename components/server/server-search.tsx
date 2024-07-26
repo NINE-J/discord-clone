@@ -98,6 +98,7 @@ export const ServerSearch = ({
                     <CommandItem key={id} onSelect={()=>onClick({ id, type })}>
                       {icon}
                       <span>{name}</span>
+                      <span className='hidden'>{id}</span>
                     </CommandItem>
                   )
                 })}
